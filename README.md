@@ -1,4 +1,9 @@
 ## Ookla DevOps Engineer Take-Home Assignment
+
+### Proof of work
+![Alt text](image.png)
+
+
 Below is a take-home assignment before the interview for the position. You are required to:
 1. Understand the situation and use case. You may contact the interviewer for further clarification.
 2. Develop and run your deployment plan using your preferred tools.
