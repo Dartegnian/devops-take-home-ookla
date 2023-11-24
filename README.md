@@ -1,8 +1,63 @@
 ## Ookla DevOps Engineer Take-Home Assignment
 
 ### Proof of work
+
+https://ookla-test.dartegnian.com/
+
 ![Alt text](image.png)
 
+
+### Deployment plan
+- Initial fork of repository
+- Set up GitHub Actions YML file for Docker
+- Set up GitHub Actions environment and secrets
+- Deploy to Docker Hub (https://hub.docker.com/r/dartegnian/devops-take-home-ookla)
+- Pull latest image to machine (my Linux server)
+- Serve with Nginx
+
+![Alt text](image-1.png)
+
+
+### Nginx config
+
+```
+server {
+  server_name ookla-test.dartegnian.com;
+
+  location / {
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Scheme $scheme;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_redirect off;
+    proxy_pass http://localhost:8080/;
+  }
+
+
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/ookla-test.dartegnian.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/ookla-test.dartegnian.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = ookla-test.dartegnian.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+  server_name ookla-test.dartegnian.com;
+    listen 80;
+    return 404; # managed by Certbot
+
+
+}
+```
+
+### Original
 
 Below is a take-home assignment before the interview for the position. You are required to:
 1. Understand the situation and use case. You may contact the interviewer for further clarification.
